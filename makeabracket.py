@@ -11,7 +11,7 @@ def character_list_one_user(user):
     query = '''
     query ($name:String) {
         MediaListCollection(userName:$name, type:ANIME) {
-            lists {name entries {media {title {english} characters {nodes {name{full}, gender, favourites}}}}}
+            lists {name entries {media {title {romaji, english} characters {nodes {name{full}, gender, favourites}}}}}
          }
     }'''
 
@@ -25,13 +25,14 @@ def character_list_one_user(user):
     for media_list_collection in response['data']['MediaListCollection']['lists']:
         if media_list_collection['name'] != "Planning":
             for entries in media_list_collection['entries']:
-                title = entries['media']['title']['english']
+                title_english = entries['media']['title']['english']
+                title_romaji = entries['media']['title']['romaji']
                 for character in entries['media']['characters']['nodes']:
                     if character['gender'] == "Female" and character['favourites'] > 100:
-                        if title:
-                            character_list.append(character['name']['full'] + " (" + title + ")")
+                        if title_english:
+                            character_list.append([character['name']['full'], "(" + title_english + ")"])
                         else:
-                            character_list.append(character['name']['full'])
+                            character_list.append([character['name']['full'], "(" + title_romaji + ")"])
 
     return character_list
 
@@ -43,7 +44,14 @@ def character_list_multiple_users(list_of_users):
         full_char_list.append(character_list_one_user(user))
 
     flat_char_list = [item for sublist in full_char_list for item in sublist]
-    return list(set(flat_char_list))
+    existing_chars = []
+    no_dupes_list = []
+    for char_show_tuple in flat_char_list:
+        if char_show_tuple[0] not in existing_chars:
+            no_dupes_list.append(char_show_tuple[0] + " " + char_show_tuple[1])
+            existing_chars.append(char_show_tuple[0])
+
+    return no_dupes_list
 
 
 def run_bracket(bracket_list, size):
@@ -62,7 +70,7 @@ def run_bracket(bracket_list, size):
         return run_bracket(new_bracket_list, size/2)
 
 
-friends = ['josrei1923']
+friends = ['Patrui']
 print("Your winner is", run_bracket(random.sample(character_list_multiple_users(friends), 32), 32))
 
 
