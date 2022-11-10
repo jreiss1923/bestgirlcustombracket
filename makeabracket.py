@@ -9,12 +9,13 @@ from io import BytesIO
 
 url = 'https://graphql.anilist.co'
 
+
 def character_list_one_user(user):
 
     query = '''
     query ($name:String) {
         MediaListCollection(userName:$name, type:ANIME) {
-            lists {name entries {media {title {romaji, english} characters {nodes {name{full}, gender, favourites, image{large}}}}}}
+            lists {name entries {media {title {romaji, english} characters {edges {role}, nodes {name{full}, gender, favourites, image{large}}}}}}
          }
     }'''
 
@@ -30,8 +31,14 @@ def character_list_one_user(user):
             for entries in media_list_collection['entries']:
                 title_english = entries['media']['title']['english']
                 title_romaji = entries['media']['title']['romaji']
-                for character in entries['media']['characters']['nodes']:
-                    if character['gender'] == "Female" and character['favourites'] > 100:
+                for i in range(len(entries['media']['characters']['nodes'])):
+                    character = entries['media']['characters']['nodes'][i]
+                    character_edge = entries['media']['characters']['edges'][i]
+                    role = character_edge['role']
+                    print(role)
+                    gender = character['gender']
+                    favourites = character['favourites']
+                    if gender == "Female" and favourites > 100 and role != "BACKGROUND":
                         if title_english:
                             character_list.append([character['name']['full'], "(" + title_english + ")", character['image']['large']])
                         else:
