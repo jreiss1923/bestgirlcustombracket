@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <head>
     <title>
-        thingy
+        Anilist Bracket
     </title>
     <script type="text/javascript" src="app.js"></script>
 </head>
 <body>
     <form id="thingo">
-        <input name="bingus" type="text">
-        <input type="button" onclick="thingymajiggy(this.form.bingus.value)">Submit formy</button>
+        <input name="username" type="text">
+        <input type="button" onclick="queryData(this.form.username.value)">Submit formy</button>
     </form>
+
+
+    <input type="button" onclick="initBracket(64)">run bracket</button>
+    <div style="display:inline" id="left_image_loc">
+        <input type="button" onclick="imageChoice('left')">left</button>
+    </div>
+    <div style="display:inline" id="right_image_loc">
+        <input type="button" onclick="imageChoice('right')">right</button>
+    </div>
     
 </body>
