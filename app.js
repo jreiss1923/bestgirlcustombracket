@@ -74,7 +74,7 @@ function imageChoice(left_or_right) {
         return 0;
     }
 
-    if (random_sample.length == 2) {
+    else if (random_sample.length == 2) {
         size = size/2;
         random_sample = temp_bracket.sort(() => 0.5 - Math.random()).slice(0, size);
         temp_bracket = [];
@@ -120,7 +120,7 @@ function run_bracket(count) {
     src.appendChild(img);
 }
 
-function initBracket(size) {
+function initBracket() {
 
     const no_dupes_list = removeDupes();
     random_sample = no_dupes_list.sort(() => 0.5 - Math.random()).slice(0, size);
@@ -151,8 +151,10 @@ function queryData(user) {
 }
 
 function selectSize(text_box_size) {
+    document.getElementById("num_text_box").value = "";
     size=text_box_size;
 }
+
 
 
 
