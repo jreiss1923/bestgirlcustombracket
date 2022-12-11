@@ -11,6 +11,10 @@
         <input type="button" onclick="queryData(this.form.username.value)">Submit formy</button>
     </form>
 
+    <form id="bracket_size">
+        <input id="num_text_box" name="size" type="text">
+        <input type="button" onclick="selectSize(this.form.size.value)">Pick bracket size (please be a power of 2)</button>
+    </form>
 
     <input type="button" onclick="initBracket(64)">run bracket</button>
     <div style="display:inline" id="left_image_loc">

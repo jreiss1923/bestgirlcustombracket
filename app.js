@@ -1,7 +1,7 @@
 const character_list = [];
 var random_sample = [];
 var temp_bracket = [];
-var size = 0;
+var size = 64;
 
 // make form for power of 2
 // enter to submit name form
@@ -17,7 +17,7 @@ function loadData() {
 
     const response = JSON.parse(this.responseText);
     for (let i = 0; i < response.data.MediaListCollection.lists.length; i++) {
-        if (response.data.MediaListCollection.lists[i].name != "Planning") {
+        if (response.data.MediaListCollection.lists[i].name == "Completed" || response.data.MediaListCollection.lists[i].name == "Watching") {
             for (let j = 0; j < response.data.MediaListCollection.lists[i].entries.length; j++) {
                 const title_english = response.data.MediaListCollection.lists[i].entries[j].media.title.english;
                 const title_romaji = response.data.MediaListCollection.lists[i].entries[j].media.title.romaji;
@@ -75,6 +75,7 @@ function imageChoice(left_or_right) {
     }
 
     if (random_sample.length == 2) {
+        size = size/2;
         random_sample = temp_bracket.sort(() => 0.5 - Math.random()).slice(0, size);
         temp_bracket = [];
     }
@@ -150,7 +151,7 @@ function queryData(user) {
 }
 
 function selectSize(text_box_size) {
-    
+    size=text_box_size;
 }
 
 
