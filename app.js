@@ -1,6 +1,17 @@
-const character_list = []
-var random_sample = []
-var temp_bracket = []
+const character_list = [];
+var random_sample = [];
+var temp_bracket = [];
+var size = 0;
+
+// make form for power of 2
+// enter to submit name form
+// show list of users
+// show round number
+// shuffle bracket
+// win screen
+// fix winner screen exit
+// play sound
+// add standings (1, 2, 3-4, etc) at end
 
 function loadData() {
 
@@ -50,6 +61,7 @@ function removeDupes() {
 }
 
 function imageChoice(left_or_right) {
+    console.log("googa");
     if (left_or_right == "left") {
         temp_bracket.push(random_sample[0]);
     }
@@ -63,7 +75,7 @@ function imageChoice(left_or_right) {
     }
 
     if (random_sample.length == 2) {
-        random_sample = temp_bracket;
+        random_sample = temp_bracket.sort(() => 0.5 - Math.random()).slice(0, size);
         temp_bracket = [];
     }
     
@@ -71,24 +83,39 @@ function imageChoice(left_or_right) {
         random_sample = random_sample.slice(2, random_sample.length);
     }
 
-    run_bracket();
+    run_bracket(1);
 
 
 
 }
 
-function run_bracket() {
+function run_bracket(count) {
     var src = document.getElementById("left_image_loc");
-    src.removeChild(src.lastChild);
+    if (count == 1) {
+        src.removeChild(src.lastChild);
+        src.removeChild(src.lastChild);
+    }
+    var button = document.createElement("button");
+    button.innerText = random_sample[0][0];
+    button.onclick = function() { imageChoice("left") };
     var img = document.createElement("img");
     img.src = random_sample[0][1];
+    src.appendChild(button);
     src.appendChild(img);
+    
 
 
     var src = document.getElementById("right_image_loc");
-    src.removeChild(src.lastChild);
+    if (count == 1) {
+        src.removeChild(src.lastChild);
+        src.removeChild(src.lastChild);
+    }
+    var button = document.createElement("button");
+    button.innerText = random_sample[1][0];
+    button.onclick = function() { imageChoice("right") };
     var img = document.createElement("img");
     img.src = random_sample[1][1];
+    src.appendChild(button);
     src.appendChild(img);
 }
 
@@ -97,11 +124,13 @@ function initBracket(size) {
     const no_dupes_list = removeDupes();
     random_sample = no_dupes_list.sort(() => 0.5 - Math.random()).slice(0, size);
     console.log(random_sample);
-    run_bracket();
+    run_bracket(0);
 
 }
 
 function queryData(user) {
+
+    document.getElementById("username_text_box").value = "";
 
     console.log(user);
 
@@ -118,6 +147,10 @@ function queryData(user) {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(body));
 
+}
+
+function selectSize(text_box_size) {
+    
 }
 
 
