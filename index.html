@@ -5,18 +5,21 @@
     </title>
     <script type="text/javascript" src="app.js"></script>
 </head>
-<body>
-    <form id="thingo">
-        <input id="username_text_box" name="username" type="text">
-        <input type="button" onclick="queryData(this.form.username.value)">Submit formy</button>
-    </form>
+<body id="body">
+    <input id="username_text_box" placeholder="AniList username" onkeydown="queryData(event)" name="username" type="text">
 
-    <form id="bracket_size">
-        <input id="num_text_box" name="size" type="text">
-        <input type="button" onclick="selectSize(this.form.size.value)">Pick bracket size (please be a power of 2)</button>
-    </form>
+    <select onchange="selectSize()" id="num_dropdown">
+        <option value=16>16</option>
+        <option value=32>32</option>
+        <option selected value=64>64</option>
+        <option value=128>128</option>
+        <option value=256>256</option>
+        <option value=512>512</option>
+        <option value=1024>1024</option>
+        <option value=2048>2048</option>
+    </select>
 
-    <input type="button" onclick="initBracket()">run bracket</button>
+    <button id="run_bracket" innerText="Run bracket" onclick="initBracket()">Run bracket</button>
     <div style="display:inline" id="left_image_loc">
 
     </div>

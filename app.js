@@ -3,16 +3,12 @@ var random_sample = [];
 var temp_bracket = [];
 var size = 64;
 
-// make form for power of 2
-// enter to submit name form
 // show list of users
 // show round number
-// shuffle bracket
-// win screen
-// fix winner screen exit
-// play sound
 // add standings (1, 2, 3-4, etc) at end
 // make weighted/favorites bracket
+// left/right arrow keys to select character
+// undo button?
 
 function loadData() {
 
@@ -62,7 +58,6 @@ function removeDupes() {
 }
 
 function imageChoice(left_or_right) {
-    console.log("googa");
     if (left_or_right == "left") {
         temp_bracket.push(random_sample[0]);
     }
@@ -71,23 +66,40 @@ function imageChoice(left_or_right) {
     }
 
     if (temp_bracket.length == 1 && random_sample.length == 2) {
-        console.log("winner");
-        return 0;
+        display_winner(temp_bracket[0]);
     }
 
     else if (random_sample.length == 2) {
         size = size/2;
         random_sample = shuffle(temp_bracket).slice(0, size);
         temp_bracket = [];
+        console.log(random_sample.length);
     }
     
     else {
         random_sample = random_sample.slice(2, random_sample.length);
+        console.log(random_sample.length);
     }
 
     run_bracket(1);
 
 
+
+}
+
+function display_winner(winner) {
+    document.getElementById("username_text_box").remove();
+    document.getElementById("num_dropdown").remove();
+    document.getElementById("left_image_loc").remove();
+    document.getElementById("right_image_loc").remove();
+    document.getElementById("run_bracket").remove();
+
+    var div = document.createElement("div");
+    var img = document.createElement("img");
+    img.src = winner[1];
+    div.innerHTML = "winner";
+    div.appendChild(img);
+    document.getElementById("body").appendChild(div);
 
 }
 
@@ -125,35 +137,35 @@ function initBracket() {
 
     const no_dupes_list = removeDupes();
     random_sample = shuffle(shuffle(no_dupes_list)).slice(0, size);
-    console.log(random_sample);
+    console.log(random_sample.length);
     run_bracket(0);
 
 }
 
-function queryData(user) {
+function queryData(e) {
+    if (e.keyCode == 13) {
+        user = document.getElementById("username_text_box").value;
+        document.getElementById("username_text_box").value = "";
 
-    document.getElementById("username_text_box").value = "";
-
-    console.log(user);
-
-    const body = {
-        query:"query ($name:String) {MediaListCollection(userName:$name, type:ANIME) {lists {name entries {media {title {romaji, english} characters {edges {role}, nodes {name{full}, gender, favourites, image{large}}}}}}}}",
-        variables: {
-            name:user
+        const body = {
+            query:"query ($name:String) {MediaListCollection(userName:$name, type:ANIME) {lists {name entries {media {title {romaji, english} characters {edges {role}, nodes {name{full}, gender, favourites, image{large}}}}}}}}",
+            variables: {
+                name:user
+            }
         }
+        
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener("load", loadData);
+        xhr.open("POST", "https://graphql.anilist.co");
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(body));
     }
-    
-    const xhr = new XMLHttpRequest();
-    xhr.addEventListener("load", loadData);
-    xhr.open("POST", "https://graphql.anilist.co");
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(body));
+
 
 }
 
-function selectSize(text_box_size) {
-    document.getElementById("num_text_box").value = "";
-    size=text_box_size;
+function selectSize() {
+    size = document.getElementById("num_dropdown").value;
 }
 
 function shuffle(array) {
