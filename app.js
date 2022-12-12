@@ -12,6 +12,7 @@ var size = 64;
 // fix winner screen exit
 // play sound
 // add standings (1, 2, 3-4, etc) at end
+// make weighted/favorites bracket
 
 function loadData() {
 
@@ -76,7 +77,7 @@ function imageChoice(left_or_right) {
 
     else if (random_sample.length == 2) {
         size = size/2;
-        random_sample = temp_bracket.sort(() => 0.5 - Math.random()).slice(0, size);
+        random_sample = shuffle(temp_bracket).slice(0, size);
         temp_bracket = [];
     }
     
@@ -123,7 +124,7 @@ function run_bracket(count) {
 function initBracket() {
 
     const no_dupes_list = removeDupes();
-    random_sample = no_dupes_list.sort(() => 0.5 - Math.random()).slice(0, size);
+    random_sample = shuffle(shuffle(no_dupes_list)).slice(0, size);
     console.log(random_sample);
     run_bracket(0);
 
@@ -155,6 +156,23 @@ function selectSize(text_box_size) {
     size=text_box_size;
 }
 
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
 
 
 
