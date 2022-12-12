@@ -3,13 +3,9 @@ var random_sample = [];
 var temp_bracket = [];
 var size = 64;
 
-// show list of users
-// show round number
 // add standings (1, 2, 3-4, etc) at end
-// make weighted/favorites bracket
 // left/right arrow keys to select character
 // undo button?
-// gray out button until data loaded
 // pick smaller size if list too small for power of 2
 // all character/guy dropdown
 // add pisslo removal (top n favorites) for big brackets
@@ -169,9 +165,18 @@ function queryData(e) {
         xhr.open("POST", "https://graphql.anilist.co");
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(body));
+
+        addUserToList(user);
     }
 
 
+}
+
+function addUserToList(user) {
+    var list_element = document.createElement("li");
+    var list_value = document.createTextNode(user);
+    list_element.appendChild(list_value);
+    document.getElementById("user_list").appendChild(list_element);
 }
 
 function selectSize() {
