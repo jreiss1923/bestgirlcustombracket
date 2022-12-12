@@ -9,6 +9,10 @@ var size = 64;
 // make weighted/favorites bracket
 // left/right arrow keys to select character
 // undo button?
+// gray out button until data loaded
+// pick smaller size if list too small for power of 2
+// all character/guy dropdown
+// add pisslo removal (top n favorites) for big brackets
 
 function loadData() {
 
@@ -38,6 +42,8 @@ function loadData() {
             }
         }
     }
+
+    document.getElementById("run_bracket").disabled = false;
 
 }
 
@@ -143,9 +149,13 @@ function initBracket() {
 }
 
 function queryData(e) {
+
+
     if (e.keyCode == 13) {
         user = document.getElementById("username_text_box").value;
         document.getElementById("username_text_box").value = "";
+
+        document.getElementById("run_bracket").disabled = true;
 
         const body = {
             query:"query ($name:String) {MediaListCollection(userName:$name, type:ANIME) {lists {name entries {media {title {romaji, english} characters {edges {role}, nodes {name{full}, gender, favourites, image{large}}}}}}}}",
