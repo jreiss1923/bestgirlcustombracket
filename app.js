@@ -1,6 +1,7 @@
 const character_list = [];
 var random_sample = [];
 var temp_bracket = [];
+var standings = [];
 var size = 64;
 
 // add standings (1, 2, 3-4, etc) at end
@@ -62,9 +63,11 @@ function removeDupes() {
 function imageChoice(left_or_right) {
     if (left_or_right == "left") {
         temp_bracket.push(random_sample[0]);
+        standings.push(random_sample[1]);
     }
     else if (left_or_right == "right") {
         temp_bracket.push(random_sample[1]);
+        standings.push(random_sample[0]);
     }
 
     if (temp_bracket.length == 1 && random_sample.length == 2) {
@@ -102,6 +105,25 @@ function display_winner(winner) {
     div.innerHTML = "winner";
     div.appendChild(img);
     document.getElementById("body").appendChild(div);
+
+    display_standings(winner);
+
+}
+
+function display_standings(winner) {
+    standings.push(winner);
+    standings.reverse();
+    var top_8 = standings.slice(0, 8);
+
+    var standings_list = document.getElementById("rank_list");
+
+    for (var i = 0; i < 8; i++) {
+        var list_element = document.createElement("li");
+        var list_value = document.createTextNode(top_8[i][0]);
+        list_element.appendChild(list_value);
+        standings_list.append(list_element);
+    }
+
 
 }
 
