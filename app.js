@@ -78,12 +78,10 @@ function imageChoice(left_or_right) {
         size = size/2;
         random_sample = shuffle(temp_bracket).slice(0, size);
         temp_bracket = [];
-        console.log(random_sample.length);
     }
     
     else {
         random_sample = random_sample.slice(2, random_sample.length);
-        console.log(random_sample.length);
     }
 
     run_bracket(1);
@@ -93,18 +91,14 @@ function imageChoice(left_or_right) {
 }
 
 function display_winner(winner) {
-    document.getElementById("username_text_box").remove();
-    document.getElementById("num_dropdown").remove();
     document.getElementById("left_image_loc").remove();
     document.getElementById("right_image_loc").remove();
-    document.getElementById("run_bracket").remove();
 
-    var div = document.createElement("div");
+    var div = document.getElementById("winner");
+
     var img = document.createElement("img");
     img.src = winner[1];
-    div.innerHTML = "winner";
     div.appendChild(img);
-    document.getElementById("body").appendChild(div);
 
     display_standings(winner);
 
@@ -119,7 +113,7 @@ function display_standings(winner) {
 
     for (var i = 0; i < 8; i++) {
         var list_element = document.createElement("li");
-        var list_value = document.createTextNode(top_8[i][0]);
+        var list_value = document.createTextNode((i + 1) + ". " + top_8[i][0]);
         list_element.appendChild(list_value);
         standings_list.append(list_element);
     }
@@ -131,37 +125,42 @@ function run_bracket(count) {
     var src = document.getElementById("left_image_loc");
     if (count == 1) {
         src.removeChild(src.lastChild);
-        src.removeChild(src.lastChild);
     }
     var button = document.createElement("button");
-    button.innerText = random_sample[0][0];
+    var para = document.createElement("p");
+    para.innerHTML = random_sample[0][0];
     button.onclick = function() { imageChoice("left") };
     var img = document.createElement("img");
     img.src = random_sample[0][1];
+    button.appendChild(img);
+    button.appendChild(para);
     src.appendChild(button);
-    src.appendChild(img);
     
 
 
     var src = document.getElementById("right_image_loc");
     if (count == 1) {
         src.removeChild(src.lastChild);
-        src.removeChild(src.lastChild);
     }
     var button = document.createElement("button");
-    button.innerText = random_sample[1][0];
+    var para = document.createElement("p");
+    para.innerHTML = random_sample[1][0];
     button.onclick = function() { imageChoice("right") };
     var img = document.createElement("img");
     img.src = random_sample[1][1];
+    button.appendChild(img);
+    button.appendChild(para);
     src.appendChild(button);
-    src.appendChild(img);
 }
 
 function initBracket() {
 
+    document.getElementById("username_text_box").remove();
+    document.getElementById("num_dropdown").remove();
+    document.getElementById("run_bracket").remove();
+
     const no_dupes_list = removeDupes();
     random_sample = shuffle(shuffle(no_dupes_list)).slice(0, size);
-    console.log(random_sample.length);
     run_bracket(0);
 
 }
@@ -195,7 +194,7 @@ function queryData(e) {
 }
 
 function addUserToList(user) {
-    var list_element = document.createElement("li");
+    var list_element = document.createElement("p");
     var list_value = document.createTextNode(user);
     list_element.appendChild(list_value);
     document.getElementById("user_list").appendChild(list_element);
