@@ -30,6 +30,22 @@
     cursor: pointer;
 }
 
+#gender_dropdown {
+    background-color: #151f2e;
+    border: none;
+    padding: 15px 2px;
+    color: #728aa1;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+}
+
+#rank_dropdown:hover {
+    cursor: pointer;
+}
+
 #run_bracket {
     background-color: #151f2e;
     border: none;
@@ -129,5 +145,17 @@
 }
 
 #right_image_loc button:hover p {
+    color: #39a5df;
+}
+
+#text_file_div button {
+    background-color: #151f2e;
+    color: #728aa1;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+#text_file_div button:hover {
     color: #39a5df;
 }

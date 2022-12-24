@@ -3,13 +3,20 @@ var random_sample = [];
 var temp_bracket = [];
 var standings = [];
 var size = 64;
+var select_gender = "Female";
 
-// add standings (1, 2, 3-4, etc) at end
+// text file for standings
 // left/right arrow keys to select character
-// undo button?
-// pick smaller size if list too small for power of 2
-// all character/guy dropdown
-// add pisslo removal (top n favorites) for big brackets
+// split line for displaying character + show in bracket
+
+function resetDropdowns() {
+    document.getElementById("gender_dropdown").selectedIndex = 0;
+    document.getElementById("num_dropdown").selectedIndex = 2;
+}
+
+function selectGender() {
+    select_gender = document.getElementById("gender_dropdown").value;
+}
 
 function loadData() {
 
@@ -27,14 +34,28 @@ function loadData() {
                     const gender = character.gender;
                     const favourites = character.favourites;
 
-                    if (gender == "Female" && favourites > 100 && role != "BACKGROUND") {
-                        if (title_english) {
-                            character_list.push([character.name.full, "(" + title_english + ")", character.image.large]);
-                        }
-                        else {
-                            character_list.push([character.name.full, "(" + title_romaji + ")", character.image.large]);
+                    if (select_gender != "Any") {
+                        if (gender == select_gender && favourites > 100 && role != "BACKGROUND") {
+                            if (title_english) {
+                                character_list.push([character.name.full, "(" + title_english + ")", character.image.large]);
+                            }
+                            else {
+                                character_list.push([character.name.full, "(" + title_romaji + ")", character.image.large]);
+                            }
                         }
                     }
+                    else {
+                        if (favourites > 100 && role != "BACKGROUND") {
+                            if (title_english) {
+                                character_list.push([character.name.full, "(" + title_english + ")", character.image.large]);
+                            }
+                            else {
+                                character_list.push([character.name.full, "(" + title_romaji + ")", character.image.large]);
+                            }
+                        }
+                    }
+
+                    
                 }
             }
         }
@@ -90,6 +111,32 @@ function imageChoice(left_or_right) {
 
 }
 
+function downloadFile(standings) {
+
+    var standings_names = ""
+
+    for (var i = 0; i < standings.length; i++) {
+        standings_names += standings[i][0] + "\n";
+    }
+
+    var link_to_download = document.createElement("a");
+    link_to_download.download = "standings.txt";
+    blob = new Blob([standings_names], {type: 'text/plain'});
+    link_to_download.href = window.URL.createObjectURL(blob);
+    link_to_download.click();
+}
+
+function createTextFileDownload(standings) {
+
+    var button_div = document.getElementById("text_file_div");
+    var dl_button = document.createElement("button");
+    dl_button.innerHTML = "Full Standings";
+    dl_button.onclick = function () { downloadFile(standings)};
+    
+    button_div.append(dl_button);
+
+}
+
 function display_winner(winner) {
     document.getElementById("left_image_loc").remove();
     document.getElementById("right_image_loc").remove();
@@ -107,6 +154,9 @@ function display_winner(winner) {
 function display_standings(winner) {
     standings.push(winner);
     standings.reverse();
+
+    createTextFileDownload(standings);
+
     var top_8 = standings.slice(0, 8);
 
     var standings_list = document.getElementById("rank_list");
@@ -128,6 +178,7 @@ function run_bracket(count) {
     }
     var button = document.createElement("button");
     var para = document.createElement("p");
+    console.log(random_sample[0][0])
     para.innerHTML = random_sample[0][0];
     button.onclick = function() { imageChoice("left") };
     var img = document.createElement("img");
@@ -158,8 +209,13 @@ function initBracket() {
     document.getElementById("username_text_box").remove();
     document.getElementById("num_dropdown").remove();
     document.getElementById("run_bracket").remove();
+    document.getElementById("gender_dropdown").remove();
 
     const no_dupes_list = removeDupes();
+    while (size > no_dupes_list.length) {
+        console.log(size);
+        size = size/2;
+    }
     random_sample = shuffle(shuffle(no_dupes_list)).slice(0, size);
     run_bracket(0);
 
