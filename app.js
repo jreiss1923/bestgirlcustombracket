@@ -5,7 +5,6 @@ var standings = [];
 var size = 64;
 var select_gender = "Female";
 
-// text file for standings
 // left/right arrow keys to select character
 // split line for displaying character + show in bracket
 
@@ -116,7 +115,7 @@ function downloadFile(standings) {
     var standings_names = ""
 
     for (var i = 0; i < standings.length; i++) {
-        standings_names += standings[i][0] + "\n";
+        standings_names += (i + 1) + ". " + standings[i][0] + "\n";
     }
 
     var link_to_download = document.createElement("a");
@@ -179,7 +178,7 @@ function run_bracket(count) {
     var button = document.createElement("button");
     var para = document.createElement("p");
     console.log(random_sample[0][0])
-    para.innerHTML = random_sample[0][0];
+    para.innerHTML = random_sample[0][0].split("(")[0] + "<br>(" + random_sample[0][0].split("(")[1];
     button.onclick = function() { imageChoice("left") };
     var img = document.createElement("img");
     img.src = random_sample[0][1];
@@ -195,7 +194,7 @@ function run_bracket(count) {
     }
     var button = document.createElement("button");
     var para = document.createElement("p");
-    para.innerHTML = random_sample[1][0];
+    para.innerHTML = random_sample[1][0].split("(")[0] + "<br>(" + random_sample[1][0].split("(")[1];
     button.onclick = function() { imageChoice("right") };
     var img = document.createElement("img");
     img.src = random_sample[1][1];
