@@ -6,7 +6,6 @@ var size = 64;
 var select_gender = "Female";
 
 // left/right arrow keys to select character
-// split line for displaying character + show in bracket
 
 function resetDropdowns() {
     document.getElementById("gender_dropdown").selectedIndex = 0;
@@ -170,7 +169,21 @@ function display_standings(winner) {
 
 }
 
+function keyPressImageChoice(event) {
+    if (event.keyCode == 37) {
+        imageChoice("left");
+    }
+    else if (event.keyCode == 39) {
+        imageChoice("right");
+    }
+}
+
 function run_bracket(count) {
+
+    document.onkeypress = function (e) {
+        keyPressImageChoice(e);
+    }
+
     var src = document.getElementById("left_image_loc");
     if (count == 1) {
         src.removeChild(src.lastChild);
